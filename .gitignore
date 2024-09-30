@@ -1,0 +1,6 @@
+# ignoring python's virtual enviroment stuff
+bin
+include
+lib
+lib64
+pyvenv.cfg
