@@ -1,7 +1,9 @@
 import sqlite3
 
-#função para conectar ao banco de dados e criar uma tabela de usuarios caso nao exista.
-def connect_db() -> sqlite3.Connection:
+type Conn = sqlite3.Connection
+
+# função para conectar ao banco de dados e criar uma tabela de usuarios caso nao exista.
+def connect_db() -> Conn:
     conn = sqlite3.connect('funcionarios.db')
     return conn
 
@@ -27,16 +29,19 @@ def add_funcionario(nome, cpf, dt_nascimento) -> None:
     conn = connect_db()
     curr = conn.cursor()
 
-    curr.execute("INSERT INTO funcionarios_tbl(nome, cpf, dt_nascimento) VALUES(?, ?, ?)", (nome, cpf, dt_nascimento))
+    curr.execute("INSERT INTO funcionarios_tbl(nome, cpf, dt_nascimento) VALUES(?, ?, ?)", (nome, cpf, dt_nascimento,))
 
     conn.commit()
     curr.close()
     conn.close()
 
-#função para remover um funcionario pela busca por cpf
-def remover_funcionario(cpf):
-    raise NotImplementedError
+# função para remover um funcionario pela busca por cpf
+def remover_funcionario(cpf) -> None:
+    conn = connect_db()
+    curr = conn.cursor()
 
-#função para retornar todos os funcionarios
-def get_all_funcionarios():
-    raise NotImplementedError
+    curr.execute("DELETE FROM funcionarios_tbl where cpf = ?", (cpf, ))
+
+    conn.commit()
+    curr.close()
+    conn.close()
