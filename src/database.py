@@ -23,8 +23,15 @@ def create_table() -> None:
     conn.close()
 
 #função para adicionar um funcionario
-def add_funcionario(nome, cpf, dt_nascimento):
-    raise NotImplementedError
+def add_funcionario(nome, cpf, dt_nascimento) -> None:
+    conn = connect_db()
+    curr = conn.cursor()
+
+    curr.execute("INSERT INTO funcionarios_tbl(nome, cpf, dt_nascimento) VALUES(?, ?, ?)", (nome, cpf, dt_nascimento))
+
+    conn.commit()
+    curr.close()
+    conn.close()
 
 #função para remover um funcionario pela busca por cpf
 def remover_funcionario(cpf):
