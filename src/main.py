@@ -1,5 +1,4 @@
 import os
-import sqlite3
 import cv2
 import numpy as np
 
@@ -8,7 +7,7 @@ ESC = 27
 def move_img(img: str) -> None:
 	# vai remover "./" do nome da imagem e só deixar "user.png"
 	formated_img_name = img.strip("./")
-	os.rename(img, f"images/{formated_img_name}")
+	os.rename(img, f"faces/{formated_img_name}")
 
 # https://note.nkmk.me/en/python-opencv-imread-imwrite/
 def save_face(frame: np.array) -> None:
@@ -25,7 +24,7 @@ def main() -> int:
 		succ, frame = cap.read()
 
 		if(not succ):
-			print("Algo deu errado.")
+			print("Something went wrong.")
 			break
 
 		cv2.imshow("Your face", frame)
@@ -35,7 +34,6 @@ def main() -> int:
 			save_face(frame)
 			print("Exiting...")
 			break
-
 
 if(__name__ == "__main__"):
 	main()
