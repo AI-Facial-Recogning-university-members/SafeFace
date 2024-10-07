@@ -40,7 +40,7 @@ def main() -> int:
 		# se o usuário sair salve uma foto dele
 		if((cv2.waitKey(5) & 0xFF) == ESC):
 			save_face(frame)
-			print("Exiting...")
+			print("Saindo...")
 			break
 
 if(__name__ == "__main__"):
