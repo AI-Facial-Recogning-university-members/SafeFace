@@ -1,41 +1,47 @@
 import sqlite3
 
-# função para conectar ao banco de dados e criar uma tabela de usuarios caso nao exista.
-def create_db() -> None:
-    conn = sqlite3.connect('funcionarios.db')
-    cursor = conn.cursor()
+type Conn = sqlite3.Connection
 
-    cursor.execute("CREATE TABLE IF NOT EXISTS funcionarios (id INTEGER PRIMARY KEY AUTOINCREMENT,nome text NOT NULL, cpf TEXT NOT NULL UNIQUE, dt_nascimento TEXT NOT NULL, imagem_path TEXTO NOT NULL))")
+# função para conectar ao banco de dados e criar uma tabela de usuarios caso nao exista.
+def connect_db() -> Conn:
+    conn = sqlite3.connect('funcionarios.db')
+    return conn
+
+def create_table() -> None:
+    conn = connect_db()
+    curr = conn.cursor()
+
+    curr.execute("""
+        CREATE TABLE IF NOT EXISTS funcionarios_tbl (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome VARCHAR(32),
+            cpf VARCHAR(14),
+            dt_nascimento TEXT
+        )
+    """)
 
     conn.commit()
+    curr.close()
     conn.close()
 
-# função para adicionar um funcionario
-def add_funcionario(nome, cpf, dt_nascimento, imagem_path) ->  None:
-    conn = sqlite3.connect('funcionarios.db')
-    cursor = conn.cursor()
+#função para adicionar um funcionario
+def add_funcionario(nome, cpf, dt_nascimento) -> None:
+    conn = connect_db()
+    curr = conn.cursor()
 
-    cursor.execute("INSERT INTO funcionarios (nome,cpg,dt_nascimento, imagem_path) VALUES (?,?,?,?)",(nome, cpf, dt_nascimento,imagem_path))
+    curr.execute("INSERT INTO funcionarios_tbl(nome, cpf, dt_nascimento) VALUES(?, ?, ?)", (nome, cpf, dt_nascimento,))
 
     conn.commit()
+    curr.close()
     conn.close()
 
 # função para remover um funcionario pela busca por cpf
 def remover_funcionario(cpf) -> None:
-    conn = sqlite3.connect('funcionarios.db')
-    cursor = conn.cursor()
+    conn = connect_db()
+    curr = conn.cursor()
 
-    cursor.execute("DELETE FROM funcionarios WHERE cpf = ?", (cpf))
+    curr.execute("DELETE FROM funcionarios_tbl where cpf = ?", (cpf, ))
+
     conn.commit()
+    curr.close()
     conn.close()
-
-#função para retornar todos os funcionarios
-def get_all_funcionarios() -> None:
-    conn = sqlite3.connect('funcionarios.db')
-    cursor = conn.cursor()
-
-    cursor.execute("SELECT * FROM funcionarios")
-    funcionarios = cursor.fetchall()
-
-    conn.close()
-    return funcionarios
