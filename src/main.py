@@ -4,10 +4,21 @@ import numpy as np
 
 ESC = 27
 
+def is_faces_dir_created(dirname: str) -> bool:
+	return os.path.isdir(dirname)
+
 def move_img(img: str) -> None:
 	# vai remover "./" do nome da imagem e só deixar "user.png"
 	formated_img_name = img.strip("./")
-	os.rename(img, f"faces/{formated_img_name}")
+	# nome do diretório para guardar as imagens
+	dirname = "faces/"
+
+	# irá verificar se o diretório que
+	# está dentro de "dirname" não existe
+	if(not is_faces_dir_created(dirname)):
+		os.mkdir(dirname)
+
+	os.rename(img, f"{dirname}/{formated_img_name}")
 
 # https://note.nkmk.me/en/python-opencv-imread-imwrite/
 def save_face(frame: np.array) -> None:
