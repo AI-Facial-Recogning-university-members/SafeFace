@@ -35,12 +35,12 @@ def main() -> int:
 		succ, frame = cap.read()
 
 		if(not succ):
-			print("Something went wrong.")
+			print("Something went wrong while trying to access webcam.")
 			break
 
 		cv2.imshow("Your face", frame)
 
-		# se o usuário sair save uma foto dele
+		# se o usuário sair salve uma foto dele
 		if((cv2.waitKey(5) & 0xFF) == ESC):
 			save_face(frame)
 			print("Exiting...")
