@@ -4,10 +4,7 @@ import numpy as np
 
 ESC = 27
 
-def is_faces_dir_created(dirname: str) -> bool:
-	return os.path.isdir(dirname)
-
-def move_img(img: str) -> None:
+def move_img(img) -> None:
 	# vai remover "./" do nome da imagem e só deixar "user.png"
 	formated_img_name = img.strip("./")
 	# nome do diretório para guardar as imagens
@@ -15,13 +12,13 @@ def move_img(img: str) -> None:
 
 	# irá verificar se o diretório que
 	# está dentro de "dirname" não existe
-	if(not is_faces_dir_created(dirname)):
+	if(not os.path.isdir(dirname)):
 		os.mkdir(dirname)
 
 	os.rename(img, f"{dirname}/{formated_img_name}")
 
 # https://note.nkmk.me/en/python-opencv-imread-imwrite/
-def save_face(frame: np.array) -> None:
+def save_face(frame) -> None:
 	user_img_name = "./user.png"
 	# vai salvar o momento atual da webcam em uma foto
 	cv2.imwrite(user_img_name, frame)
