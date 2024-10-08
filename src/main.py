@@ -36,9 +36,15 @@ def save_face(frame) -> None:
 	# vai salvar o momento atual da webcam em uma foto
 	cv2.imwrite(user_img_name, frame)
 	# vai mover a imagem do diretório atual para o diretório "images"
-	move_img(user_img_name)
+	move_img(img_name)
 
 def main() -> int:
+	create_table()
+
+	worker = get_funcionario_info()
+
+	add_funcionario(worker[0], worker[1], worker[2])
+
 	cap = cv2.VideoCapture(0)
 
 	while(True):
@@ -52,7 +58,7 @@ def main() -> int:
 
 		# se o usuário sair salve uma foto dele
 		if((cv2.waitKey(5) & 0xFF) == ESC):
-			save_face(frame)
+			save_face(worker[0], frame)
 			print("Saindo...")
 			break
 
