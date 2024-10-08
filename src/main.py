@@ -18,8 +18,6 @@ def get_funcionario_info() -> list:
 	return [worker_name, worker_cpf, worker_birth_date]
 
 def move_img(img) -> None:
-	# vai remover "./" do nome da imagem e só deixar "user.png"
-	formated_img_name = img.strip("./")
 	# nome do diretório para guardar as imagens
 	dirname = "faces/"
 
@@ -28,14 +26,15 @@ def move_img(img) -> None:
 	if(not os.path.isdir(dirname)):
 		os.mkdir(dirname)
 
-	os.rename(img, f"{dirname}/{formated_img_name}")
+	os.rename(img, f"{dirname}/{img}")
 
 # https://note.nkmk.me/en/python-opencv-imread-imwrite/
-def save_face(frame) -> None:
-	user_img_name = "./user.png"
+def save_face(wname, frame) -> None:
+	# vai gerar o nome da imagem para salvar
+	img_name = wname + ".png"
 	# vai salvar o momento atual da webcam em uma foto
-	cv2.imwrite(user_img_name, frame)
-	# vai mover a imagem do diretório atual para o diretório "images"
+	cv2.imwrite(img_name, frame)
+	# vai mover a imagem do diretório atual para o diretório das imagems
 	move_img(img_name)
 
 def main() -> int:
