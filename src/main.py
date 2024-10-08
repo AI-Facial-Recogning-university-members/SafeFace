@@ -1,8 +1,21 @@
 import os
 import cv2
 import numpy as np
+from database import add_funcionario, create_table
 
 ESC = 27
+
+# função que vai retornar uma lista com
+# - nome
+# - cpf
+# - data de nascimento
+# nessa ordem
+def get_funcionario_info() -> list:
+	worker_name = input("Nome do funcionario: ")
+	worker_cpf = input("Cpf do funcionario: ")
+	worker_birth_date = input("Data de nascimento do funcionario: ")
+
+	return [worker_name, worker_cpf, worker_birth_date]
 
 def move_img(img) -> None:
 	# vai remover "./" do nome da imagem e só deixar "user.png"
