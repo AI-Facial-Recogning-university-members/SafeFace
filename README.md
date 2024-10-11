@@ -1,6 +1,9 @@
 # SafeFace
 
-University project.
+## About the project
+
+This project was made as a project to the last semester of 2024.
+The objective here is quite simple: make a facial recognition software with AI.
 
 ## Project members
 
