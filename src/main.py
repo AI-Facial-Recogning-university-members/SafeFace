@@ -1,47 +1,62 @@
-import os
 import cv2
+import mediapipe as mp
+import face_recognition
 import numpy as np
 
-ESC = 27
+# Inicializando MediaPipe e OpenCV
+webcam = cv2.VideoCapture(0)
+reconhecimento_rosto = mp.solutions.face_detection
+desenho = mp.solutions.drawing_utils
+reconhecedor_rosto = reconhecimento_rosto.FaceDetection()
 
-def move_img(img) -> None:
-	# vai remover "./" do nome da imagem e só deixar "user.png"
-	formated_img_name = img.strip("./")
-	# nome do diretório para guardar as imagens
-	dirname = "faces/"
+# Carregando imagens e nomes
+conhecidos_encodings = []
+nomes = []
 
-	# irá verificar se o diretório que
-	# está dentro de "dirname" não existe
-	if(not os.path.isdir(dirname)):
-		os.mkdir(dirname)
+def carregar_imagem(nome_arquivo, nome):
+    imagem = face_recognition.load_image_file(nome_arquivo)
+    encoding = face_recognition.face_encodings(imagem)[0]
+    conhecidos_encodings.append(encoding)
+    nomes.append(nome)
 
-	os.rename(img, f"{dirname}/{formated_img_name}")
+# Adicione suas imagens aqui
+carregar_imagem("./img/gustavo.jpg", "Gustavo")
+carregar_imagem("./img/leoo.jpg", "Leonardo")
 
-# https://note.nkmk.me/en/python-opencv-imread-imwrite/
-def save_face(frame) -> None:
-	user_img_name = "./user.png"
-	# vai salvar o momento atual da webcam em uma foto
-	cv2.imwrite(user_img_name, frame)
-	# vai mover a imagem do diretório atual para o diretório "images"
-	move_img(user_img_name)
+while webcam.isOpened():
+    validacao, frame = webcam.read()
+    if not validacao:
+        break
+    imagem_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    lista_rostos = reconhecedor_rosto.process(imagem_rgb)
 
-def main() -> int:
-	cap = cv2.VideoCapture(0)
+    if lista_rostos.detections:
+        for rosto in lista_rostos.detections:
+            # Desenhando o rosto detectado
+            desenho.draw_detection(frame, rosto)
+            
+            # Obtendo localizações dos rostos no frame atual
+            face_locations = face_recognition.face_locations(frame)
+            face_encodings = face_recognition.face_encodings(frame, face_locations)
+            
+            for face_encoding, face_location in zip(face_encodings, face_locations):
+                # Comparando rostos detectados com rostos conhecidos
+                matches = face_recognition.compare_faces(conhecidos_encodings, face_encoding)
+                name = "Desconhecido"
+                
+                face_distances = face_recognition.face_distance(conhecidos_encodings, face_encoding)
+                best_match_index = np.argmin(face_distances)
+                if matches[best_match_index]:
+                    name = nomes[best_match_index]
 
-	while(True):
-		succ, frame = cap.read()
+                # Desenhando o retângulo ao redor do rosto e o nome
+                top, right, bottom, left = face_location
+                cv2.rectangle(frame, (left, top), (right, bottom), (0, 255, 0), 2)
+                cv2.putText(frame, name, (left, top - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
 
-		if(not succ):
-			print("Something went wrong while trying to access webcam.")
-			break
+    cv2.imshow("Rostos na sua webcam", frame)
+    if cv2.waitKey(5) == 27:  # ESC
+        break
 
-		cv2.imshow("Your face", frame)
-
-		# se o usuário sair salve uma foto dele
-		if((cv2.waitKey(5) & 0xFF) == ESC):
-			save_face(frame)
-			print("Saindo...")
-			break
-
-if(__name__ == "__main__"):
-	main()
+webcam.release()
+cv2.destroyAllWindows()
