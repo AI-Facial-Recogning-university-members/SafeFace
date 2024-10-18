@@ -2,9 +2,16 @@ import cv2
 import mediapipe as mp
 import face_recognition
 import numpy as np
+
 # Carregando imagens e nomes
 conhecidos_encodings = []
 nomes = []
+
+# Inicializando MediaPipe e OpenCV
+webcam = cv2.VideoCapture(0)
+reconhecimento_rosto = mp.solutions.face_detection
+desenho = mp.solutions.drawing_utils
+reconhecedor_rosto = reconhecimento_rosto.FaceDetection()
 
 def carregar_imagem(nome_arquivo, nome):
     imagem = face_recognition.load_image_file(nome_arquivo)
