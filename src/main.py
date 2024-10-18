@@ -21,11 +21,11 @@ def desenhar_rosto(frame, desenho, rosto) -> None:
 	# Obtendo localizações dos rostos no frame atual
 	face_locations = face_recognition.face_locations(frame)
 	face_encodings = face_recognition.face_encodings(frame, face_locations)
+	nome = "Desconhecido"
 
 	for face_encoding, face_location in zip(face_encodings, face_locations):
 		# Comparando rostos detectados com rostos conhecidos
 		matches = face_recognition.compare_faces(conhecidos_encodings, face_encoding)
-		name = "Desconhecido"
 
 		face_distances = face_recognition.face_distance(conhecidos_encodings, face_encoding)
 		best_match_index = np.argmin(face_distances)
@@ -33,13 +33,14 @@ def desenhar_rosto(frame, desenho, rosto) -> None:
 		if matches[best_match_index]:
 			name = nomes[best_match_index]
 
-	desenhar_retangulo_rosto(frame, face_locations, nome)
+			desenhar_retangulo_rosto(frame, face_locations, nome)
 
 def carregar_imagem(nome_arquivo, nome):
- 	imagem = face_recognition.load_image_file(nome_arquivo)
- 	encoding = face_recognition.face_encodings(imagem)[0]
- 	conhecidos_encodings.append(encoding)
- 	nomes.append(nome)
+	imagem = face_recognition.load_image_file(nome_arquivo)
+	encoding = face_recognition.face_encodings(imagem)[0]
+	conhecidos_encodings.append(encoding)
+	nomes.append(nome)
+
 
 def main() -> int:
 	# Inicializando MediaPipe e OpenCV
@@ -47,9 +48,9 @@ def main() -> int:
 	desenho = mp.solutions.drawing_utils
 	reconhecimento_rosto = mp.solutions.face_detection
 	reconhecedor_rosto = reconhecimento_rosto.FaceDetection()
-
-	carregar_imagem("./img/gustavo.jpg", "Gustavo")
-	carregar_imagem("./img/leoo.jpg", "Leonardo")
+	
+	carregar_imagem("../img/gustavo.jpg", "Gustavo")
+	carregar_imagem("../img/leoo.jpg", "Leonardo")
 
 	while(webcam.isOpened()):
 		validacao, frame = webcam.read()
@@ -63,6 +64,7 @@ def main() -> int:
 		if lista_rostos.detections:
 			for rosto in lista_rostos.detections:
 				desenhar_rosto(frame, desenho, rosto)
+			
 
 		cv2.imshow("Rostos na sua webcam", frame)
 		if cv2.waitKey(5) == 27:  # ESC
