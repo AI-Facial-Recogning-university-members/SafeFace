@@ -15,8 +15,7 @@ def create_table() -> None:
         CREATE TABLE IF NOT EXISTS funcionarios_tbl (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nome VARCHAR(32),
-            cpf VARCHAR(14),
-            dt_nascimento TEXT
+            cpf VARCHAR(14)
         )
     """)
 
@@ -29,7 +28,7 @@ def add_funcionario(nome, cpf, dt_nascimento) -> None:
     conn = connect_db()
     curr = conn.cursor()
 
-    curr.execute("INSERT INTO funcionarios_tbl(nome, cpf, dt_nascimento) VALUES(?, ?, ?)", (nome, cpf, dt_nascimento,))
+    curr.execute("INSERT INTO funcionarios_tbl(nome, cpf, dt_nascimento) VALUES(?, ?, ?)", (nome, cpf,))
 
     conn.commit()
     curr.close()
