@@ -85,7 +85,7 @@ def main() -> int:
 		cv2.imshow("Rostos na sua webcam", frame)
 		
 		if cv2.waitKey(5) == PRINT_KEY:
-			salvar_imagem(frame)
+			salvar_rosto(frame)
 
 		if cv2.waitKey(5) == 27:  # ESC
 			break
