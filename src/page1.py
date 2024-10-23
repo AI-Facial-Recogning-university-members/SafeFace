@@ -3,7 +3,7 @@ from ttkbootstrap.constants import *
 import subprocess 
 
 def cadastrar():
-    subprocess.run(["python", "page2.py"])
+    subprocess.run(["python", r'.\src\page2.py'])
 
 def exdit():
     print("Excluir botão pressionado!")
