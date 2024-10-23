@@ -2,15 +2,11 @@ import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 from ttkbootstrap.style import Style
 import subprocess 
-import sqlite3
+from database import add_funcionario
 
-def salvar_nome(nome):
-    conn=sqlite3.connect('database.py')
-    cursor=conn.cursor()
+def cadastrar():
+	add_funcionario(nome_entry.get(), cpf_entry.get())
 
-    cursor.execute('''
-                    ''')
-    
 def validar_nome(x)-> bool:
     if x.isdigit():
         return True
@@ -27,8 +23,6 @@ def validar_cpf(x)-> bool:
     else:
         return True
 
-
-
 def voltar():
     subprocess.run(["python", "page1.py"])
 
@@ -37,34 +31,52 @@ app = ttk.Window("SAFEFACE")
 app.geometry("550x500")
 style = Style(theme="superhero")
 
+digitNome_func= app.register(validar_nome)
+digitCpf_func= app.register(validar_cpf)
+
+
 # Título
 label = ttk.Label(app, text="Cadastro")
 label.config(font=("Arial", 20, "bold"))
 label.pack(pady=35)
 
-digitNome_func= app.register(validar_nome)
-digitCpf_func= app.register(validar_cpf)
+campos = ttk.Frame(app)
+
+# Frame Nome
+nome_frame = ttk.Frame(app)
 
 # Campo Nome
-nome = ttk.Frame(app)
-nome.pack(pady=18, padx=10, fill="x")
-ttk.Label(nome, text="Nome").pack(side=LEFT, padx=5)
-nome_entry = ttk.Entry(app, validate="focus", validatecommand=(digitNome_func, '%P'))
-ttk.Entry(nome).pack(side=LEFT, fill="x", expand=True, padx=5)
+nome_label = ttk.Label(campos, text="Nome")
+nome_label.pack(side=LEFT, padx=5)
+
+nome_entry = ttk.Entry(campos)
+nome_entry.pack(side=LEFT, fill="x", expand=True, padx=5)
+
+nome_frame.pack()
+
+# Frame CPF
+cpf_frame = ttk.Frame(app)
 
 # Campo CPF
-cpf = ttk.Frame(app)
-cpf.pack(pady=18, padx=10, fill="x")
-ttk.Label(cpf, text="CPF").pack(side=LEFT, padx=10)
-cpf_entry = ttk.Entry(app, validate="focus", validatecommand=(digitCpf_func, '%P'))
-ttk.Entry(cpf).pack(side=LEFT, fill="x", expand=True, padx=5)
+cpf_label = ttk.Label(campos, text="CPF")
+cpf_label.pack(side=LEFT, padx=10)
 
+cpf_entry = ttk.Entry(campos, validate="focus", validatecommand=(digitCpf_func, '%P'))
+cpf_entry.pack(side=LEFT, fill="x", expand=True, padx=5)
 
+campos.pack(pady=18, padx=10, fill="x")
+
+cpf_frame = ttk.Frame(app)
 # Botões
-botao = ttk.Frame(app)
-botao.pack(pady=30, padx=10, fill="x")
-ttk.Button(botao, text="Cadastrar", command=cadastrar, bootstyle=SUCCESS).pack(side=LEFT, padx=15)
-ttk.Button(botao, text="Voltar", command=voltar,bootstyle=SUCCESS).pack(side=LEFT, padx=15)
+botoes = ttk.Frame(app)
+
+cadastrar_botao = ttk.Button(botoes, text="Cadastrar", command=cadastrar, bootstyle=SUCCESS)
+cadastrar_botao.pack(side=LEFT, padx=15)
+
+voltar_botao = ttk.Button(botoes, text="Voltar", command=voltar,bootstyle=SUCCESS)
+voltar_botao.pack(side=LEFT, padx=15)
+
+botoes.pack(pady=30, padx=10, fill="x")
 
 # Inicia o loop principal da janela
 app.mainloop()
