@@ -24,11 +24,11 @@ def create_table() -> None:
     conn.close()
 
 #função para adicionar um funcionario
-def add_funcionario(nome, cpf, dt_nascimento) -> None:
+def add_funcionario(nome, cpf) -> None:
     conn = connect_db()
     curr = conn.cursor()
 
-    curr.execute("INSERT INTO funcionarios_tbl(nome, cpf, dt_nascimento) VALUES(?, ?, ?)", (nome, cpf,))
+    curr.execute("INSERT INTO funcionarios_tbl(nome, cpf) VALUES(?, ?)", (nome, cpf,))
 
     conn.commit()
     curr.close()
