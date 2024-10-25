@@ -23,9 +23,6 @@ def validar_cpf(x)-> bool:
     else:
         return True
 
-def voltar():
-    subprocess.run(["python", "page1.py"])
-
 # Cria a janela principal
 app = ttk.Window("SAFEFACE")
 app.geometry("550x500")
@@ -33,7 +30,6 @@ style = Style(theme="superhero")
 
 digitNome_func= app.register(validar_nome)
 digitCpf_func= app.register(validar_cpf)
-
 
 # Título
 label = ttk.Label(app, text="Cadastro")
@@ -73,7 +69,7 @@ botoes = ttk.Frame(app)
 cadastrar_botao = ttk.Button(botoes, text="Cadastrar", command=cadastrar, bootstyle=SUCCESS)
 cadastrar_botao.pack(side=LEFT, padx=15)
 
-voltar_botao = ttk.Button(botoes, text="Voltar", command=voltar,bootstyle=SUCCESS)
+voltar_botao = ttk.Button(botoes, text="Voltar", command=app.destroy)
 voltar_botao.pack(side=LEFT, padx=15)
 
 botoes.pack(pady=30, padx=10, fill="x")
