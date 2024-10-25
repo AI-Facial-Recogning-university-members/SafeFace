@@ -9,7 +9,7 @@ def exdit():
     print("Excluir botão pressionado!")
 
 def executar():
-    subprocess.run(["python", "PrintFace.py"])
+    subprocess.run(["python", r'.\src\PrintFace.py'])
 
 
 app = ttk.Window(themename="superhero")
