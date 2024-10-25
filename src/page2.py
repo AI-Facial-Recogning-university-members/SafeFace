@@ -1,10 +1,9 @@
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
-from ttkbootstrap.style import Style
 import subprocess 
 from database import add_funcionario
 
-def cadastrar():
+def salvar_nome():
 	add_funcionario(nome_entry.get(), cpf_entry.get())
 
 def validar_nome(x)-> bool:
@@ -23,10 +22,15 @@ def validar_cpf(x)-> bool:
     else:
         return True
 
+def addfoto():
+    subprocess.run(["python",r'.\src\PrintFace.py'])
+
+def voltar():
+    subprocess.run(["python", r'.\src\page1.py'])
+
 # Cria a janela principal
-app = ttk.Window("SAFEFACE")
-app.geometry("550x500")
-style = Style(theme="superhero")
+app = ttk.Window(title="SAFEFACE", themename="superhero")
+app.geometry("750x700")
 
 digitNome_func= app.register(validar_nome)
 digitCpf_func= app.register(validar_cpf)
@@ -62,15 +66,16 @@ cpf_entry.pack(side=LEFT, fill="x", expand=True, padx=5)
 
 campos.pack(pady=18, padx=10, fill="x")
 
-cpf_frame = ttk.Frame(app)
 # Botões
 botoes = ttk.Frame(app)
 
-cadastrar_botao = ttk.Button(botoes, text="Cadastrar", command=cadastrar, bootstyle=SUCCESS)
-cadastrar_botao.pack(side=LEFT, padx=15)
+add_foto_botao = ttk.Button(botoes,text="Add foto", command=addfoto,bootstyle=SUCCESS)
 
 voltar_botao = ttk.Button(botoes, text="Voltar", command=app.destroy)
 voltar_botao.pack(side=LEFT, padx=15)
+
+cadastrar_botao = ttk.Button(botoes, text="Cadastrar", command=salvar_nome, bootstyle=SUCCESS)
+cadastrar_botao.pack(side=TOP,pady=10,padx=15)
 
 botoes.pack(pady=30, padx=10, fill="x")
 

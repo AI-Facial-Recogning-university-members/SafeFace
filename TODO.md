@@ -5,14 +5,14 @@
 - Melhorar código
 
 ## App desktop -> Programação ( marcar um x na frente se ja foi feito ) 
-    - Page 1 -> Principal:
+    - Page 1 -> Principal:  x
         botoes: 
-            Cadastrar
-            Excluir
+            Cadastrar       x
+            Excluir         x
             Executar (execução do programa principal) -> "Linkar main.py"
     
-    - Page 2 -> Cadastro:
-        Formulario: -> { Todas as informações sendo linkadas diretamente ao database } 
+    - Page 2 -> Cadastro:   x
+        Formulario: -> { Todas as informações sendo linkadas diretamente ao database } (ainda nao foi linkado, mas esta feito)
             label :     x
                 nome    x
                 cpf     x
