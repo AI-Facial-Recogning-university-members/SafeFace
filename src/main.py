@@ -2,10 +2,6 @@ import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 import subprocess
 
-# Carregando imagens e nomes
-conhecidos_encodings = []
-nomes = []
-
 def cadastrar():
     subprocess.run(["python", r'./src/page2.py'])
 
