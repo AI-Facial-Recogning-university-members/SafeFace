@@ -1,29 +1,12 @@
-import os
 import cv2
 import mediapipe as mp
 import face_recognition
 import numpy as np
 
-PRINT_KEY = 112
 
 # Carregando imagens e nomes
 conhecidos_encodings = []
 nomes = []
-
-def mover_imagem(img) -> None:
-	# vai retirar a imagem do diretorio atual e mover ela
-	# para "img/"
-	os.rename(img, f"../img/{img}")
-
-def salvar_rosto(frame, nome = "Desconhecido") -> None:
-	imagem = f"{nome}.jpg"
-
-	# vai salvar o momento atual da webcam em uma foto
-	# https://note.nkmk.me/en/python-opencv-imread-imwrite/
-	cv2.imwrite(imagem, frame)
-
-	# vai mover a imagem do diretório atual para o diretório "images"
-	mover_imagem(imagem)
 
 def desenhar_retangulo_rosto(frame, local_rosto, nome) -> None:
 	# Desenhando o retângulo ao redor do rosto e o nome
@@ -48,7 +31,7 @@ def desenhar_rosto(frame, desenho, rosto) -> None:
 		best_match_index = np.argmin(face_distances)
 
 		if matches[best_match_index]:
-			nome = nomes[best_match_index]
+			name = nomes[best_match_index]
 
 			desenhar_retangulo_rosto(frame, face_locations, nome)
 
@@ -81,12 +64,9 @@ def main() -> int:
 		if lista_rostos.detections:
 			for rosto in lista_rostos.detections:
 				desenhar_rosto(frame, desenho, rosto)
+			
 
 		cv2.imshow("Rostos na sua webcam", frame)
-		
-		if cv2.waitKey(5) == PRINT_KEY:
-			salvar_rosto(frame)
-
 		if cv2.waitKey(5) == 27:  # ESC
 			break
 
