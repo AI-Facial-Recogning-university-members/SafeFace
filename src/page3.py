@@ -1,6 +1,5 @@
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
-
 from ttkbootstrap.tableview import Tableview 
 import subprocess 
 import sqlite3
@@ -8,6 +7,13 @@ import sqlite3
 app = ttk.Window(themename="superhero",title="SAFEFACE")
 app.geometry("750x500")
 colors = app.style.colors
+
+def editar():
+    app.destroy()
+    subprocess.run(["python", r'.\src\page4.py'])
+
+def excluir():
+    pass
 
 
 l1 = [
@@ -35,4 +41,8 @@ tv = Tableview(
 tv.autofit_columns()
 tv.pack(fill=BOTH, expand=YES, padx=10, pady=10)
 
+botao = ttk.Frame(app)
+botao.pack(pady=30, padx=10, fill="x")
+ttk.Button(botao,text="Editar", command=editar,bootstyle=SUCCESS).pack(side=TOP,pady=10,padx=15)
+ttk.Button(botao,text="Excluir", command=excluir,bootstyle=SUCCESS).pack(side=TOP,pady=10,padx=15)
 app.mainloop()
