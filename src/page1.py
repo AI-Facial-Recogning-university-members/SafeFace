@@ -3,12 +3,15 @@ from ttkbootstrap.constants import *
 import subprocess 
 
 def cadastrar():
+    app.destroy()
     subprocess.run(["python", r'.\src\page2.py'])
 
 def exdit():
-    print("Excluir botão pressionado!")
+    app.destroy()
+    subprocess.run(["python", r'.\src\page3.py'])
 
 def executar():
+    app.destroy()
     subprocess.run(["python", r'.\src\PrintFace.py'])
 
 
