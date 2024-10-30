@@ -3,6 +3,7 @@ from ttkbootstrap.constants import *
 from ttkbootstrap.tableview import Tableview 
 import subprocess 
 import sqlite3
+from database import selecionar_funcionarios
 
 app = ttk.Window(themename="superhero",title="SAFEFACE")
 app.geometry("750x500")
@@ -21,12 +22,7 @@ l1 = [
     {"text": "CPF", "stretch": False},
 ]
 
-r_set = [
-    ("teste",1234567),
-    ("teste",1264567),
-    ("teste",1244567),
-]
-
+r_set = selecionar_funcionarios()
 
 tv = Tableview(
     master=app,
