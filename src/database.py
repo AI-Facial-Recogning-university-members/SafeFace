@@ -44,3 +44,12 @@ def remover_funcionario(cpf) -> None:
     conn.commit()
     curr.close()
     conn.close()
+
+# função para selecionar todos os funcionários do BD
+def selecionar_funcionarios() -> list:
+	conn = connect_db()
+	curr = conn.cursor()
+
+	result = curr.execute("SELECT nome, cpf FROM funcionarios_tbl")
+
+	return result.fetchall()
