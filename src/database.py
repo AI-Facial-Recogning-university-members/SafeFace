@@ -51,9 +51,10 @@ def selecionar_funcionarios() -> list:
 	curr = conn.cursor()
 
 	result = curr.execute("SELECT nome, cpf FROM funcionarios_tbl")
+	data = result.fetchall()
 
 	conn.commit()
 	curr.close()
 	conn.close()
 
-	return result.fetchall()
+	return data
