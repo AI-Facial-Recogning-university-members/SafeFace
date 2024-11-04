@@ -11,6 +11,7 @@ def create_table() -> None:
     conn = connect_db()
     curr = conn.cursor()
 
+    # Cria a tabela, caso não exista
     curr.execute("""
         CREATE TABLE IF NOT EXISTS funcionarios_tbl (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
