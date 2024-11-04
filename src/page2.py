@@ -2,26 +2,19 @@ import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 import subprocess 
 import sqlite3
+from database import create_table, connect_db
 
 # Função para salvar nome e cpf no banco de dados
 def salvar_nome(nome, cpf):
-    conn = sqlite3.connect('database.py')  # Nome do arquivo de banco de dados
-    curr = conn.cursor()
+	conn = connect_db()  # Nome do arquivo de banco de dados
+	curr = conn.cursor()
+	create_table()
 
-    # Cria a tabela, caso não exista
-    curr.execute('''
-        CREATE TABLE IF NOT EXISTS funcionarios_tbl (
-           id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome VARCHAR(32),
-            cpf VARCHAR(14)
-        )
-    ''')
+	# Insere os dados na tabela
+	curr.execute("INSERT INTO funcionarios_tbl(nome, cpf) VALUES(?, ?)", (nome, cpf,))
 
-    # Insere os dados na tabela
-    curr.execute("INSERT INTO funcionarios_tbl(nome, cpf) VALUES(?, ?)", (nome, cpf,))
-
-    conn.commit()  # Salva as alterações
-    conn.close()   # Fecha a conexão
+	conn.commit()  # Salva as alterações
+	conn.close()   # Fecha a conexão
 
 # Função que valida o nome
 def validar_nome(x) -> bool:
