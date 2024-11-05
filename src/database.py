@@ -25,6 +25,7 @@ def create_table() -> None:
 
 #função para adicionar um funcionario
 def add_funcionario(nome, cpf) -> None:
+	create_table()
 	conn = connect_db()
 	curr = conn.cursor()
 
@@ -37,6 +38,7 @@ def add_funcionario(nome, cpf) -> None:
 
 # função para remover um funcionario pela busca por cpf
 def remover_funcionario(cpf) -> None:
+	create_table()
 	conn = connect_db()
 	curr = conn.cursor()
 
