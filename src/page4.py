@@ -1,19 +1,7 @@
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 import subprocess 
-import sqlite3
-from database import create_table, connect_db
-
-# Função para salvar nome e cpf no banco de dados
-def salvar_nome(nome_antigo, cpf_antigo, nome_novo, cpf_novo):
-	create_table()
-	conn = connect_db()  # Nome do arquivo de banco de dados
-	curr = conn.cursor()
-
-	curr.execute("UPDATE funcionarios_tbl SET nome = ?, cpf = ? WHERE nome = ? AND cpf = ?", (nome_novo, cpf_novo, nome_antigo, cpf_antigo,))
-
-	conn.commit()
-	conn.close()
+from database import atualizar_registro
 
 # Função que valida o nome
 def validar_nome(x) -> bool:
@@ -34,7 +22,6 @@ def validar_cpf(x) -> bool:
 def editarfoto():
     subprocess.run(["python", r'.\src\PrintFace.py'])
 
-
 # Função para atualizar dados
 def atualizar():
 	nome_antigo = nome_entry.get()
@@ -42,12 +29,11 @@ def atualizar():
 	nome_novo = nome_novo_entry.get()
 	cpf_novo = cpf_novo_entry.get()
 
-	salvar_nome(nome_antigo, cpf_antigo, nome_novo, cpf_novo)
+	atualizar_registro(nome_antigo, cpf_antigo, nome_novo, cpf_novo)
 
 def voltar():
     app.destroy()
     subprocess.run(["python", r'.\src\page1.py'])
-
 
 # Função da tela de cadastro
 def tela_cadastro():
