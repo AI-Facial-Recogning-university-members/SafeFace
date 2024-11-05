@@ -2,19 +2,7 @@ import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 import subprocess 
 import sqlite3
-from database import create_table, connect_db
-
-# Função para salvar nome e cpf no banco de dados
-def salvar_nome(nome, cpf):
-	conn = connect_db()  # Nome do arquivo de banco de dados
-	curr = conn.cursor()
-	create_table()
-
-	# Insere os dados na tabela
-	curr.execute("INSERT INTO funcionarios_tbl(nome, cpf) VALUES(?, ?)", (nome, cpf,))
-
-	conn.commit()  # Salva as alterações
-	conn.close()   # Fecha a conexão
+from database import add_funcionario
 
 # Função que valida o nome
 def validar_nome(x) -> bool:
@@ -35,7 +23,7 @@ def validar_cpf(x) -> bool:
 def cadastrar():
     nome = nome_entry.get()
     cpf = cpf_entry.get()
-    salvar_nome(nome, cpf)
+    add_funcionario(nome, cpf)
 
 # Outros componentes de interface e o loop principal
 def addfoto():
