@@ -2,26 +2,7 @@ import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 import subprocess 
 import sqlite3
-
-# Função para salvar nome e cpf no banco de dados
-def salvar_nome(nome, cpf):
-    conn = sqlite3.connect('database.py')  # Nome do arquivo de banco de dados
-    curr = conn.cursor()
-
-    # Cria a tabela, caso não exista
-    curr.execute('''
-        CREATE TABLE IF NOT EXISTS funcionarios_tbl (
-           id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome VARCHAR(32),
-            cpf VARCHAR(14)
-        )
-    ''')
-
-    # Insere os dados na tabela
-    curr.execute("INSERT INTO funcionarios_tbl(nome, cpf) VALUES(?, ?)", (nome, cpf,))
-
-    conn.commit()  # Salva as alterações
-    conn.close()   # Fecha a conexão
+from database import add_funcionario
 
 # Função que valida o nome
 def validar_nome(x) -> bool:
@@ -40,9 +21,9 @@ def validar_cpf(x) -> bool:
 
 # Adiciona uma função ao botão "Cadastrar" para chamar salvar_nome com os dados dos campos
 def cadastrar():
-    nome = nome_entry.get()
-    cpf = cpf_entry.get()
-    salvar_nome(nome, cpf)
+	nome = nome_entry.get()
+	cpf = cpf_entry.get()
+	add_funcionario(nome, cpf)
 
 # Outros componentes de interface e o loop principal
 def addfoto():
@@ -80,11 +61,17 @@ cpf_entry = ttk.Entry(cpf, validate="focus", validatecommand=(digitCpf_func, '%P
 cpf_entry.pack(side=LEFT, fill="x", expand=True, padx=5)
 
 # Botões
-botao = ttk.Frame(app)
-botao.pack(pady=30, padx=10, fill="x")
-ttk.Button(botao, text="Add foto", command=addfoto, bootstyle=SUCCESS).pack(side=TOP, pady=10, padx=15)
-ttk.Button(botao, text="Cadastrar", command=cadastrar, bootstyle=INFO).pack(side=TOP, pady=10, padx=15)
-ttk.Button(botao, text="Voltar", command=voltar, bootstyle=WARNING).pack(side=BOTTOM, pady=10, padx=30)
+botoes = ttk.Frame(app)
+
+add_foto_botao = ttk.Button(botoes,text="Add foto", command=addfoto,bootstyle=SUCCESS)
+
+voltar_botao = ttk.Button(botoes, text="Voltar", command=app.destroy)
+voltar_botao.pack(side=LEFT, padx=15)
+
+cadastrar_botao = ttk.Button(botoes, text="Cadastrar", command=cadastrar, bootstyle=SUCCESS)
+cadastrar_botao.pack(side=TOP,pady=10,padx=15)
+
+botoes.pack(pady=30, padx=10, fill="x")
 
 # Inicia o loop principal da janela
 app.mainloop()

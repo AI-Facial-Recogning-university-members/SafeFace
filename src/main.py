@@ -32,29 +32,32 @@ def desenhar_rosto(frame, desenho, rosto) -> None:
             if matches[best_match_index]:
                 nome = nomes[best_match_index]
 
-        desenhar_retangulo_rosto(frame, face_location, nome)
+             if matches[best_match_index]:
+			    nome = nomes[best_match_index]
+
+	desenhar_retangulo_rosto(frame, (128, 70, 40, 20), nome)
 
 def carregar_imagem(nome_arquivo, nome):
-    imagem = face_recognition.load_image_file(nome_arquivo)
-    encoding = face_recognition.face_encodings(imagem)[0]
-    conhecidos_encodings.append(encoding)
-    nomes.append(nome)
+	imagem = face_recognition.load_image_file(nome_arquivo)
+	encoding = face_recognition.face_encodings(imagem)[0]
+	conhecidos_encodings.append(encoding)
+	nomes.append(nome)
 
 def main() -> int:
-    # Inicializando MediaPipe e OpenCV
-    webcam = cv2.VideoCapture(0)
-    desenho = mp.solutions.drawing_utils
-    reconhecimento_rosto = mp.solutions.face_detection
-    reconhecedor_rosto = reconhecimento_rosto.FaceDetection()
-    
-    # carregar_imagem("../img/gustavo.jpg", "Gustavo")
-    # carregar_imagem("../img/leoo.jpg", "Leonardo")
+	# Inicializando MediaPipe e OpenCV
+	webcam = cv2.VideoCapture(0)
+	desenho = mp.solutions.drawing_utils
+	reconhecimento_rosto = mp.solutions.face_detection
+	reconhecedor_rosto = reconhecimento_rosto.FaceDetection()
 
-    while(webcam.isOpened()):
-        validacao, frame = webcam.read()
+	carregar_imagem("../img/gustavo.jpg", "Gustavo")
+	carregar_imagem("../img/leoo.jpg", "Leonardo")
 
-        if not validacao:
-            break
+	while(webcam.isOpened()):
+		validacao, frame = webcam.read()
+		
+		if(not validacao):
+			break
 
         imagem_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         lista_rostos = reconhecedor_rosto.process(imagem_rgb)

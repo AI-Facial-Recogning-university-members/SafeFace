@@ -1,22 +1,7 @@
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 import subprocess 
-import sqlite3
-
-# Função para salvar nome e cpf no banco de dados
-def salvar_nome(nome, cpf):
-    conn = sqlite3.connect('database.py')  # Nome do arquivo de banco de dados
-    curr = conn.cursor()
-    curr.execute('''
-        CREATE TABLE IF NOT EXISTS funcionarios_tbl (
-           id INTEGER PRIMARY KEY AUTOINCREMENT,
-           nome VARCHAR(32),
-           cpf VARCHAR(14)
-        )
-    ''')
-    curr.execute("INSERT INTO funcionarios_tbl(nome, cpf) VALUES(?, ?)", (nome, cpf,))
-    conn.commit()
-    conn.close()
+from database import atualizar_registro
 
 # Função que valida o nome
 def validar_nome(x) -> bool:
@@ -37,21 +22,22 @@ def validar_cpf(x) -> bool:
 def editarfoto():
     subprocess.run(["python", r'.\src\PrintFace.py'])
 
-
 # Função para atualizar dados
 def atualizar():
-    nome = nome_entry.get()
-    cpf = cpf_entry.get()
-    salvar_nome(nome, cpf)
+	nome_antigo = nome_entry.get()
+	cpf_antigo = cpf_entry.get()
+	nome_novo = nome_novo_entry.get()
+	cpf_novo = cpf_novo_entry.get()
+
+	atualizar_registro(nome_antigo, cpf_antigo, nome_novo, cpf_novo)
 
 def voltar():
     app.destroy()
     subprocess.run(["python", r'.\src\page1.py'])
 
-
 # Função da tela de cadastro
 def tela_cadastro():
-    global app, nome_entry, cpf_entry
+    global app, nome_entry, cpf_entry, nome_novo_entry, cpf_novo_entry
     app = ttk.Window(title="SAFEFACE - Cadastro", themename="superhero")
     app.geometry("750x700")
 
@@ -63,19 +49,33 @@ def tela_cadastro():
     digitNome_func = app.register(validar_nome)
     digitCpf_func = app.register(validar_cpf)
 
-    # Campo Nome
+    # Campo Nome Atual
     nome = ttk.Frame(app)
     nome.pack(pady=18, padx=10, fill="x")
     ttk.Label(nome, text="Nome").pack(side=LEFT, padx=5)
     nome_entry = ttk.Entry(nome, validate="focus", validatecommand=(digitNome_func, '%P'))
     nome_entry.pack(side=LEFT, fill="x", expand=True, padx=5)
 
-    # Campo CPF
+    # Campo CPF Atual
     cpf = ttk.Frame(app)
     cpf.pack(pady=18, padx=10, fill="x")
     ttk.Label(cpf, text="CPF").pack(side=LEFT, padx=10)
     cpf_entry = ttk.Entry(cpf, validate="focus", validatecommand=(digitCpf_func, '%P'))
     cpf_entry.pack(side=LEFT, fill="x", expand=True, padx=5)
+
+    # Campo Nome Novo
+    nome_novo = ttk.Frame(app)
+    nome_novo.pack(pady=18, padx=10, fill="x")
+    ttk.Label(nome, text="Nome novo").pack(side=LEFT, padx=5)
+    nome_novo_entry = ttk.Entry(nome, validate="focus", validatecommand=(digitNome_func, '%P'))
+    nome_novo_entry.pack(side=LEFT, fill="x", expand=True, padx=5)
+
+    # Campo CPF Novo
+    cpf_novo = ttk.Frame(app)
+    cpf_novo.pack(pady=18, padx=10, fill="x")
+    ttk.Label(cpf, text="CPF").pack(side=LEFT, padx=10)
+    cpf_novo_entry = ttk.Entry(cpf, validate="focus", validatecommand=(digitCpf_func, '%P'))
+    cpf_novo_entry.pack(side=LEFT, fill="x", expand=True, padx=5)
 
     # Botões
     botao = ttk.Frame(app)
