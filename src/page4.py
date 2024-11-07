@@ -1,7 +1,7 @@
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 import subprocess 
-from database import atualizar_registro
+from database import atualizar_registro, verificar_info
 
 # Função que valida o nome
 def validar_nome(x) -> bool:
@@ -29,7 +29,12 @@ def atualizar():
 	nome_novo = nome_novo_entry.get()
 	cpf_novo = cpf_novo_entry.get()
 
-	atualizar_registro(nome_antigo, cpf_antigo, nome_novo, cpf_novo)
+	# se o usuário já existir ele vai estar
+	# registrado com "cpf_antigo"
+	if(verificar_info(cpf_antigo) != 1):
+		aviso_label.config(text="Usuário não encontrado.")
+	else:
+		atualizar_registro(nome_antigo, cpf_antigo, nome_novo, cpf_novo)
 
 def voltar():
     app.destroy()
@@ -37,13 +42,13 @@ def voltar():
 
 # Função da tela de cadastro
 def tela_cadastro():
-    global app, nome_entry, cpf_entry, nome_novo_entry, cpf_novo_entry
+    global app, nome_entry, cpf_entry, nome_novo_entry, cpf_novo_entry, aviso_label
     app = ttk.Window(title="SAFEFACE - Cadastro", themename="superhero")
     app.geometry("750x700")
 
     # Título
     label = ttk.Label(app, text="Cadastro")
-    label.config(font=("Arial", 20, "bold"))
+    label.config(font=("arial", 20, "bold"))
     label.pack(pady=35)
 
     digitNome_func = app.register(validar_nome)
@@ -83,6 +88,11 @@ def tela_cadastro():
     ttk.Button(botao, text="Editar foto", command=editarfoto, bootstyle=SUCCESS).pack(side=TOP, pady=10, padx=15)
     ttk.Button(botao, text="Atualizar", command=atualizar, bootstyle=INFO).pack(side=TOP, pady=10, padx=15)
     ttk.Button(botao, text="Voltar ao Inicio", command=voltar, bootstyle=WARNING).pack(side=BOTTOM, pady=10, padx=30)
+
+	# Avisos de erro
+    aviso_label = ttk.Label(app)
+    aviso_label.config(font=("arial", 15, "bold"))
+    aviso_label.pack(pady=35)
 
     app.mainloop()
 
