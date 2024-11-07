@@ -72,3 +72,19 @@ def atualizar_registro(nome_antigo, cpf_antigo, nome_novo, cpf_novo):
 
 	conn.commit()
 	conn.close()
+
+
+# Função que procura o nome no banco de dados
+def verificar_info(cpf_procurar):
+	create_table()
+	conn = connect_db()
+	curr = conn.cursor()
+
+	curr.execute("SELECT COUNT(*) FROM funcionarios_tbl WHERE cpf = ?", (cpf_procurar))
+	resultado = curr.fetchone()
+
+	conn.commit()
+	curr.close()
+	conn.close()
+
+	return resultado
