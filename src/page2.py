@@ -65,7 +65,7 @@ botoes = ttk.Frame(app)
 
 add_foto_botao = ttk.Button(botoes,text="Add foto", command=addfoto,bootstyle=SUCCESS)
 
-voltar_botao = ttk.Button(botoes, text="Voltar", command=app.destroy)
+voltar_botao = ttk.Button(botoes, text="Voltar", command=voltar)
 voltar_botao.pack(side=LEFT, padx=15)
 
 cadastrar_botao = ttk.Button(botoes, text="Cadastrar", command=cadastrar, bootstyle=SUCCESS)
