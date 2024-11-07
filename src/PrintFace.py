@@ -20,8 +20,8 @@ def carregar_imagem(nome_arquivo, nome):
     nomes.append(nome)
 
 # Adicione suas imagens aqui
-carregar_imagem("./img/gustavo.jpg", "Gustavo")
-carregar_imagem("./img/leoo.jpg", "Leonardo")
+# carregar_imagem("./img/gustavo.jpg", "Gustavo")
+# carregar_imagem("./img/leoo.jpg", "Leonardo")
 
 while webcam.isOpened():
     validacao, frame = webcam.read()
