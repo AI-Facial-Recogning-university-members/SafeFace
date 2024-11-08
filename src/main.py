@@ -47,9 +47,6 @@ def main() -> int:
     reconhecimento_rosto = mp.solutions.face_detection
     reconhecedor_rosto = reconhecimento_rosto.FaceDetection()
 
-    # carregar_imagem("../img/gustavo.jpg", "Gustavo")
-    # carregar_imagem("../img/leoo.jpg", "Leonardo")
-
     while webcam.isOpened():
         validacao, frame = webcam.read()
         
