@@ -74,18 +74,28 @@ def atualizar_registro(nome_antigo, cpf_antigo, nome_novo, cpf_novo):
 	conn.commit()
 	conn.close()
 
-
-# Função que procura o nome no banco de dados
-def verificar_info(cpf_procurar):
+def deletar_funcionario(nome_funcionario, cpf_funcionario):
 	create_table()
 	conn = connect_db()
 	curr = conn.cursor()
 
-	curr.execute("SELECT COUNT(*) FROM funcionarios_tbl WHERE cpf = ?", (cpf_procurar,))
+	curr.execute("DELETE FROM funcionarios_tbl WHERE nome = ? AND cpf = ?", (nome_funcionario, cpf_funcionario,))
+
+	conn.commit()
+	curr.close()
+	conn.close()
+
+# Função que procura o nome no banco de dados
+def verificar_info(nome_procurar, cpf_procurar):
+	create_table()
+	conn = connect_db()
+	curr = conn.cursor()
+
+	curr.execute("SELECT COUNT(*) FROM funcionarios_tbl WHERE nome = ? AND cpf = ?", (nome_procurar, cpf_procurar,))
 	resultado = curr.fetchone()
 
 	conn.commit()
 	curr.close()
 	conn.close()
 
-	return resultado
+	return resultado[0]
