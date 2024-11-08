@@ -13,81 +13,92 @@ reconhecimento_rosto = mp.solutions.face_detection
 desenho = mp.solutions.drawing_utils
 reconhecedor_rosto = reconhecimento_rosto.FaceDetection()
 
-#Fonte do Texto
+# Fonte do Texto
 fonte = cv2.FONT_HERSHEY_PLAIN
 
 def desenhar_retangulo_rosto(frame, local_rosto, nome) -> None:
-	# Desenhando o retângulo ao redor do rosto e o nome
-	top, right, bottom, left = local_rosto
-	cv2.rectangle(frame, (left, top), (right, bottom), (0, 255, 0), 2)
-	cv2.putText(frame, nome, (left, top - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 255))
+    top, right, bottom, left = local_rosto
+    cv2.rectangle(frame, (left, top), (right, bottom), (0, 255, 0), 2)
+    cv2.putText(frame, nome, (left, top - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 255), 2)
 
 def desenhar_rosto(frame, desenho, rosto) -> None:
-	name = "Desconhecido"
+    name = "Desconhecido"
+    desenho.draw_detection(frame, rosto)
+    face_locations = face_recognition.face_locations(frame)
+    face_encodings = face_recognition.face_encodings(frame, face_locations)
 
-	# Desenhando o rosto detectado
-	desenho.draw_detection(frame, rosto)
+    for face_encoding, face_location in zip(face_encodings, face_locations):
+        matches = face_recognition.compare_faces(conhecidos_encodings, face_encoding)
+        face_distances = face_recognition.face_distance(conhecidos_encodings, face_encoding)
 
-	# Obtendo localizações dos rostos no frame atual
-	face_locations = face_recognition.face_locations(frame)
-	face_encodings = face_recognition.face_encodings(frame, face_locations)
+        try:
+            best_match_index = np.argmin(face_distances)
+        except ValueError:
+            continue
 
-	for face_encoding, face_location in zip(face_encodings, face_locations):
-		# Comparando rostos detectados com rostos conhecidos
-		matches = face_recognition.compare_faces(conhecidos_encodings, face_encoding)
+        if matches[best_match_index]:
+            name = nomes[best_match_index]
 
-		face_distances = face_recognition.face_distance(conhecidos_encodings, face_encoding)
-
-		try:
-			best_match_index = np.argmin(face_distances)
-		except ValueError:
-			continue
-
-		if matches[best_match_index]:
-			name = nomes[best_match_index]
-
-		desenhar_retangulo_rosto(frame, (128, 75, 80, 55), name)
+        desenhar_retangulo_rosto(frame, face_location, name)
 
 def carregar_imagem(nome_arquivo, nome):
-	imagem = face_recognition.load_image_file(nome_arquivo)
-	encoding = face_recognition.face_encodings(imagem)[0]
-	conhecidos_encodings.append(encoding)
-	nomes.append(nome)
+    imagem = face_recognition.load_image_file(nome_arquivo)
+    encoding = face_recognition.face_encodings(imagem)[0]
+    conhecidos_encodings.append(encoding)
+    nomes.append(nome)
 
-#Função para mostrar atalhos
-def mostrar_atalhos():
-    #Atalho de uma cor, função de outra
-    cv2.putText(frame, "ESQ:Sair",(0, 25),fonte, 2, (0,0,255),1, cv2.LINE_8)
-    cv2.putText(frame, "ENTER:Tirar Foto",(0, 50),fonte, 2, (0,0,255),1, cv2.LINE_8)#Tem que mostrar a foto dps de tirada
-    cv2.putText(frame, "SPACE:Tirar Foto Novamente",(0, 75),fonte, 2, (0,0,255),1, cv2.LINE_8)
-    cv2.putText(frame, "P:Confirmar",(0, 100),fonte, 2, (0,0,255),1, cv2.LINE_8)
+def mostrar_atalhos(frame):
+    cv2.putText(frame, "ESQ: Sair", (10, 25), fonte, 1, (0, 0, 255), 1, cv2.LINE_AA)
+    cv2.putText(frame, "ENTER: Tirar Foto", (10, 50), fonte, 1, (0, 0, 255), 1, cv2.LINE_AA)
+    cv2.putText(frame, "SPACE: Tirar Foto Novamente", (10, 75), fonte, 1, (0, 0, 255), 1, cv2.LINE_AA)
+    cv2.putText(frame, "P: Confirmar", (10, 100), fonte, 1, (0, 0, 255), 1, cv2.LINE_AA)
 
-# Adicione suas imagens aqui
-# carregar_imagem("./img/gustavo.jpg", "Gustavo")
-# carregar_imagem("./img/leoo.jpg", "Leonardo")
+# Função para exibir a imagem capturada e confirmar seu salvamento
+def tirar_foto(frame):
+    cv2.imshow("Foto tirada", frame)
+    cv2.waitKey(0)  # Aguarda até que o usuário pressione uma tecla pq é burro pra porra
+
+def salvar_foto(img):
+    caminho_imagem = r'.\src\img\foto_confirmada.jpg'  # Definindo uma extensão de imagem válida
+    cv2.imwrite(caminho_imagem, img)
+    print(f"Foto confirmada e salva como '{caminho_imagem}'")
+
+
+
+foto_temporaria = None
 
 while webcam.isOpened():
-	validacao, frame = webcam.read()
-	mostrar_atalhos()
+    validacao, frame = webcam.read()
 
-	if not validacao:
-		break
+    if not validacao:
+        break
 
-	imagem_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-	lista_rostos = reconhecedor_rosto.process(imagem_rgb)
+    mostrar_atalhos(frame)
 
-	if lista_rostos.detections:
-		for rosto in lista_rostos.detections:
-			desenhar_rosto(frame, desenho, rosto)
+    imagem_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    lista_rostos = reconhecedor_rosto.process(imagem_rgb)
 
-	cv2.imshow("Rostos na sua webcam", frame)
+    if lista_rostos.detections:
+        for rosto in lista_rostos.detections:
+            desenhar_rosto(frame, desenho, rosto)
 
-	if cv2.waitKey(5) == 32:	# SPACE
-		cv2.imwrite("Imagem_saida.jpg", frame)
-		#Arrumar uma forma de fazer com que quando se pressione espaço ou enter o texto suma
+    cv2.imshow("Rostos na sua webcam", frame)
 
-	if cv2.waitKey(5) == 27:	# ESC
-		break
+    key = cv2.waitKey(1) & 0xFF
+    if key == 27:  # ESC
+        break  
+    elif key == 13:  # ENTER (tirar foto e mostrar para confirmação)
+        foto_temporaria = frame.copy()
+        tirar_foto(foto_temporaria)
+    elif key == ord('p') and foto_temporaria is not None:  # P para confirmar e salvar
+        salvar_foto(foto_temporaria)
+        break
+        
+        foto_temporaria = None  # Reseta a foto temporária após salvar
+    elif key == 32:  # SPACE para tirar foto novamente
+        tirar_foto(frame)  # Exibe a nova foto capturada
+        
+        
 
 webcam.release()
 cv2.destroyAllWindows()
