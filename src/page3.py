@@ -6,7 +6,7 @@ import sqlite3
 from database import selecionar_funcionarios
 
 app = ttk.Window(themename="superhero",title="SAFEFACE")
-app.geometry("750x500")
+app.geometry("800x700")
 colors = app.style.colors
 
 def editar():
