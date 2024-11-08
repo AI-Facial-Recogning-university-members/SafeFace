@@ -14,7 +14,8 @@ def editar():
     subprocess.run(["python", r'.\src\page4.py'])
 
 def excluir():
-    pass
+	app.destroy()
+	subprocess.run(["python", r'.\src\page5.py'])
 
 
 l1 = [
