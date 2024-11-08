@@ -18,17 +18,18 @@ titulo_label.pack(padx=35, pady=10)
 nome_label = ttk.Label(app, text="Nome: ")
 nome_label.pack()
 
-nome_entry = ttk.Entry(app)
-nome_entry.pack()
+nome = ttk.Frame(app)
+nome.pack(pady=18, padx=10, fill="x")
+ttk.Label(nome, text="Nome").pack(side=LEFT, padx=5)
+nome_entry = ttk.Entry(nome, validate="focus")
+nome_entry.pack(side=LEFT, fill="x", expand=True, padx=5)
 
-cpf_frame = ttk.Frame(app)
-cpf_frame.pack()
-
-cpf_label = ttk.Label(app, text="CPF: ")
-cpf_label.pack()
-
-cpf_entry = ttk.Entry(app)
-cpf_entry.pack()
+# Campo CPF
+cpf = ttk.Frame(app)
+cpf.pack(pady=18, padx=10, fill="x")
+ttk.Label(cpf, text="CPF").pack(side=LEFT, padx=10)
+cpf_entry = ttk.Entry(cpf, validate="focus")
+cpf_entry.pack(side=LEFT, fill="x", expand=True, padx=5)
 
 botao_excluir = ttk.Button(app, text="Excluir", command=delfuncionario)
 botao_excluir.pack()
