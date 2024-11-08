@@ -78,7 +78,7 @@ def tela_cadastro():
     # Campo CPF Novo
     cpf_novo = ttk.Frame(app)
     cpf_novo.pack(pady=18, padx=10, fill="x")
-    ttk.Label(cpf, text="CPF").pack(side=LEFT, padx=10)
+    ttk.Label(cpf, text="CPF novo").pack(side=LEFT, padx=10)
     cpf_novo_entry = ttk.Entry(cpf, validate="focus", validatecommand=(digitCpf_func, '%P'))
     cpf_novo_entry.pack(side=LEFT, fill="x", expand=True, padx=5)
 

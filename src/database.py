@@ -50,6 +50,7 @@ def remover_funcionario(cpf) -> None:
 
 # função para selecionar todos os funcionários do BD
 def selecionar_funcionarios() -> list:
+	create_table()
 	conn = connect_db()
 	curr = conn.cursor()
 
@@ -80,7 +81,7 @@ def verificar_info(cpf_procurar):
 	conn = connect_db()
 	curr = conn.cursor()
 
-	curr.execute("SELECT COUNT(*) FROM funcionarios_tbl WHERE cpf = ?", (cpf_procurar))
+	curr.execute("SELECT COUNT(*) FROM funcionarios_tbl WHERE cpf = ?", (cpf_procurar,))
 	resultado = curr.fetchone()
 
 	conn.commit()
