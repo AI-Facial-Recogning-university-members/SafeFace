@@ -7,34 +7,25 @@
 ## App desktop -> Programação ( marcar um x na frente se ja foi feito ) 
     - Page 1 -> Principal:  x
         botoes: 
-            Cadastrar       x
-            Excluir         x
             Executar (execução do programa principal) -> "Linkar main.py"
     
-    - Page 2 -> Cadastro:   x
         Formulario: -> { Todas as informações sendo linkadas diretamente ao database } (ainda nao foi linkado, mas esta feito)
-            label :     x
-                nome    x
-                cpf     x
-            botoes:     
-                Cadastrar
-                Adicionar foto do funcioanrio -> foto vai ser capturada e enviada à pasta ./img -> (um dos botoes principais)
-                Voltar ->(Voltar à pagina principal)   -> "page inside page" 
+            Voltar ->(Voltar à pagina principal)   -> "page inside page" 
 
     - Page 3 -> Editar/Excluir (NECESSARIO REVISAO PARA MELHOR APRIMORAMENTO DA PAGINA)
         - Ligação "page inside page":
             Page 1
         - Tabela:
-            - Todos os usuarios cadastrados
-            - podendo ser selecionado dados por dados
-        - Botoes:
-            - Editar
-            - Excluir   
-            - Voltar ->(Voltar à pagina principal)   -> "page inside page"  
+            - podendo ser selecionado dados por dados 
 
     - Page 4 -> Execução do programa principal -> (NECESSARIO REVISAO PARA MELHOR APRIMORAMENTO DA PAGINA)
         {AINDA NAO PENSEI EXATAMENTE COMO VAI SER ESSA PAGINA}
 
+## Ideia
+    -Dar resize na área da mascára
+
+## Erro
+    -Printface iniciando antes do esperado quando clica em cadastro
 
 
 
