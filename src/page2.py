@@ -63,13 +63,14 @@ cpf_entry.pack(side=LEFT, fill="x", expand=True, padx=5)
 # Botões
 botoes = ttk.Frame(app)
 
-add_foto_botao = ttk.Button(botoes,text="Add foto", command=addfoto,bootstyle=SUCCESS)
-
-voltar_botao = ttk.Button(botoes, text="Voltar", command=voltar)
-voltar_botao.pack(side=LEFT, padx=15)
+add_foto_botao = ttk.Button(botoes,text="Add foto", command=addfoto,bootstyle=INFO)
+add_foto_botao.pack(side=TOP,pady=10,padx=15)
 
 cadastrar_botao = ttk.Button(botoes, text="Cadastrar", command=cadastrar, bootstyle=SUCCESS)
 cadastrar_botao.pack(side=TOP,pady=10,padx=15)
+
+voltar_botao = ttk.Button(botoes, text="Voltar", command=voltar, bootstyle= WARNING)
+voltar_botao.pack(side=TOP,pady=10,padx=15)
 
 botoes.pack(pady=30, padx=10, fill="x")
 
