@@ -66,28 +66,32 @@ def mostrar_atalhos():
 # carregar_imagem("./img/gustavo.jpg", "Gustavo")
 # carregar_imagem("./img/leoo.jpg", "Leonardo")
 
-while webcam.isOpened():
-	validacao, frame = webcam.read()
-	mostrar_atalhos()
+def analisar_rosto(nome):
+	while webcam.isOpened():
+		validacao, frame = webcam.read()
+		mostrar_atalhos()
 
-	if not validacao:
-		break
+		if not validacao:
+			break
 
-	imagem_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-	lista_rostos = reconhecedor_rosto.process(imagem_rgb)
+		imagem_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+		lista_rostos = reconhecedor_rosto.process(imagem_rgb)
 
-	if lista_rostos.detections:
-		for rosto in lista_rostos.detections:
-			desenhar_rosto(frame, desenho, rosto)
+		if lista_rostos.detections:
+			for rosto in lista_rostos.detections:
+				desenhar_rosto(frame, desenho, rosto)
 
-	cv2.imshow("Rostos na sua webcam", frame)
+		cv2.imshow("Rostos na sua webcam", frame)
 
-	if cv2.waitKey(5) == 32:	# SPACE
-		cv2.imwrite("Imagem_saida.jpg", frame)
-		#Arrumar uma forma de fazer com que quando se pressione espaço ou enter o texto suma
+		if cv2.waitKey(5) == 32:	# SPACE
+				cv2.imwrite(f"img/{nome}.jpg", frame)#Aqui tem que sair o nome da pessoa +jpg
+				foto = cv2.imread(f"img/{nome}.jpg")
+				cv2.imshow("Foto", foto)
+				cv2.waitKey(0)#Deixa a foto mostrando até QUALQUER tecla ser apertada
+				cv2.destroyWindow("Foto")
 
-	if cv2.waitKey(5) == 27:	# ESC
-		break
+		if cv2.waitKey(5) == 27:	# ESC
+			break
 
 webcam.release()
 cv2.destroyAllWindows()

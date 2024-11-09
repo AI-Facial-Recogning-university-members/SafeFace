@@ -3,6 +3,7 @@ from ttkbootstrap.constants import *
 import subprocess 
 import sqlite3
 from database import add_funcionario
+from PrintFace import analisar_rosto
 
 # Função que valida o nome
 def validar_nome(x) -> bool:
@@ -21,18 +22,18 @@ def validar_cpf(x) -> bool:
 
 # Adiciona uma função ao botão "Cadastrar" para chamar salvar_nome com os dados dos campos
 def cadastrar():
-	nome = nome_entry.get()
-	cpf = cpf_entry.get()
-	add_funcionario(nome, cpf)
+    nome = nome_entry.get()
+    cpf = cpf_entry.get()
+    add_funcionario(nome, cpf)
+    analisar_rosto(nome)
 
 # Outros componentes de interface e o loop principal
 def addfoto():
-    app.destroy()
-    subprocess.run(["python", r'.\src\PrintFace.py'])
+    analisar_rosto(nome_entry.get())
 
 def voltar():
     app.destroy()
-    subprocess.run(["python", r'.\src\page1.py'])
+    subprocess.run(["python", r'.\src\main.py'])
 
 # Cria a janela principal
 app = ttk.Window(title="SAFEFACE", themename="superhero")
@@ -63,7 +64,8 @@ cpf_entry.pack(side=LEFT, fill="x", expand=True, padx=5)
 # Botões
 botoes = ttk.Frame(app)
 
-add_foto_botao = ttk.Button(botoes,text="Add foto", command=addfoto,bootstyle=SUCCESS)
+#add_foto_botao = ttk.Button(botoes,text="Add foto", command=addfoto,bootstyle=SUCCESS)
+#add_foto_botao.pack(side= RIGHT, pady=30)
 
 voltar_botao = ttk.Button(botoes, text="Voltar", command=voltar)
 voltar_botao.pack(side=LEFT, padx=15)
