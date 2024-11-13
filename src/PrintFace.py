@@ -2,96 +2,96 @@ import cv2
 import mediapipe as mp
 import face_recognition
 import numpy as np
+import os
 
-# Carregando imagens e nomes
+
+
+
+
 conhecidos_encodings = []
 nomes = []
 
-# Inicializando MediaPipe e OpenCV
+# Inicializa MediaPipe e OpenCV
 webcam = cv2.VideoCapture(0)
 reconhecimento_rosto = mp.solutions.face_detection
 desenho = mp.solutions.drawing_utils
 reconhecedor_rosto = reconhecimento_rosto.FaceDetection()
 
-#Fonte do Texto
+# Fonte text
 fonte = cv2.FONT_HERSHEY_PLAIN
 
-def desenhar_retangulo_rosto(frame, local_rosto, nome) -> None:
-	# Desenhando o retângulo ao redor do rosto e o nome
-	top, right, bottom, left = local_rosto
-	cv2.rectangle(frame, (left, top), (right, bottom), (0, 255, 0), 2)
-	cv2.putText(frame, nome, (left, top - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 255))
+# Função para desenhar o retângulo e nome no rosto (ver se precisa mudar a cor para diferenciar)
+def desenhar_retangulo_rosto(frame, local_rosto, nome):
+    top, right, bottom, left = local_rosto
+    cv2.rectangle(frame, (left, top), (right, bottom), (0, 255, 0), 2)
+    cv2.putText(frame, nome, (left, top - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 255), 2)
 
-def desenhar_rosto(frame, desenho, rosto) -> None:
-	name = "Desconhecido"
+# Função para desenhar rostos detectados
+def desenhar_rosto(frame, desenho, rosto):
+    name = "Desconhecido"
+    desenho.draw_detection(frame, rosto)
 
-	# Desenhando o rosto detectado
-	desenho.draw_detection(frame, rosto)
+    # Obtendo localizações dos rostos no frame 
+    face_locations = face_recognition.face_locations(frame)
+    face_encodings = face_recognition.face_encodings(frame, face_locations)
 
-	# Obtendo localizações dos rostos no frame atual
-	face_locations = face_recognition.face_locations(frame)
-	face_encodings = face_recognition.face_encodings(frame, face_locations)
+    for face_encoding, face_location in zip(face_encodings, face_locations):
+        # Comparando rostos detectados com rostos da pasta /img
+        matches = face_recognition.compare_faces(conhecidos_encodings, face_encoding)
+        face_distances = face_recognition.face_distance(conhecidos_encodings, face_encoding)
 
-	for face_encoding, face_location in zip(face_encodings, face_locations):
-		# Comparando rostos detectados com rostos conhecidos
-		matches = face_recognition.compare_faces(conhecidos_encodings, face_encoding)
+        if len(face_distances) > 0:
+            best_match_index = np.argmin(face_distances)
+            if matches[best_match_index]:
+                name = nomes[best_match_index]
 
-		face_distances = face_recognition.face_distance(conhecidos_encodings, face_encoding)
+        desenhar_retangulo_rosto(frame, face_location, name)
 
-		try:
-			best_match_index = np.argmin(face_distances)
-		except ValueError:
-			continue
-
-		if matches[best_match_index]:
-			name = nomes[best_match_index]
-
-		desenhar_retangulo_rosto(frame, (128, 75, 80, 55), name)
-
+# Função para carregar imagem e adicionar o encoding
 def carregar_imagem(nome_arquivo, nome):
-	imagem = face_recognition.load_image_file(nome_arquivo)
-	encoding = face_recognition.face_encodings(imagem)[0]
-	conhecidos_encodings.append(encoding)
-	nomes.append(nome)
+    imagem = face_recognition.load_image_file(nome_arquivo)
+    encoding = face_recognition.face_encodings(imagem)[0]
+    conhecidos_encodings.append(encoding)
+    nomes.append(nome)
 
-#Função para mostrar atalhos
-def mostrar_atalhos():
-    #Atalho de uma cor, função de outra
-    cv2.putText(frame, "ESQ:Sair",(0, 25),fonte, 2, (0,0,255),1, cv2.LINE_8)
-    cv2.putText(frame, "ENTER:Tirar Foto",(0, 50),fonte, 2, (0,0,255),1, cv2.LINE_8)#Tem que mostrar a foto dps de tirada
-    cv2.putText(frame, "SPACE:Tirar Foto Novamente",(0, 75),fonte, 2, (0,0,255),1, cv2.LINE_8)
-    cv2.putText(frame, "P:Confirmar",(0, 100),fonte, 2, (0,0,255),1, cv2.LINE_8)
+# Função para mostrar atalhos
+def mostrar_atalhos(frame):
+    cv2.putText(frame, "ESQ: Sair", (10, 25), fonte, 1, (0, 0, 255), 2, cv2.LINE_AA)
+    cv2.putText(frame, "ENTER: Tirar Foto", (10, 50), fonte, 1, (0, 0, 255), 2, cv2.LINE_AA)
+    cv2.putText(frame, "SPACE: Tirar Foto Novamente", (10, 75), fonte, 1, (0, 0, 255), 2, cv2.LINE_AA)
+    cv2.putText(frame, "P: Confirmar", (10, 100), fonte, 1, (0, 0, 255), 2, cv2.LINE_AA)
 
-# Adicione suas imagens aqui
-# carregar_imagem("./img/gustavo.jpg", "Gustavo")
-# carregar_imagem("./img/leoo.jpg", "Leonardo")
-
+# Função principal para analisar rostos
 def analisar_rosto(nome):
-	while webcam.isOpened():
-		validacao, frame = webcam.read()
-		mostrar_atalhos()
+    while webcam.isOpened():
+        validacao, frame = webcam.read()
+        if not validacao:
+            break
 
-		if not validacao:
-			break
+        mostrar_atalhos(frame)
 
-		imagem_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-		lista_rostos = reconhecedor_rosto.process(imagem_rgb)
+        imagem_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        lista_rostos = reconhecedor_rosto.process(imagem_rgb)
 
-		if lista_rostos.detections:
-			for rosto in lista_rostos.detections:
-				desenhar_rosto(frame, desenho, rosto)
+        if lista_rostos.detections:
+            for rosto in lista_rostos.detections:
+                desenhar_rosto(frame, desenho, rosto)
 
-		cv2.imshow("Rostos na sua webcam", frame)
+        cv2.imshow("Rostos na sua webcam", frame)
 
-		if cv2.waitKey(5) == 32:	# SPACE
-				cv2.imwrite(f"img/{nome}.jpg", frame)#Aqui tem que sair o nome da pessoa +jpg
-				foto = cv2.imread(f"img/{nome}.jpg")
-				cv2.imshow("Foto", foto)
-				cv2.waitKey(0)#Deixa a foto mostrando até QUALQUER tecla ser apertada
-				cv2.destroyWindow("Foto")
+        # Tirar e salvar foto quando ENTER é pressionado
+        if cv2.waitKey(5) == 13:  # ENTER
+            caminho = f"img/{nome}.jpg"
+            os.makedirs(os.path.dirname(caminho), exist_ok=True)
+            cv2.imwrite(caminho, frame)
+            foto = cv2.imread(caminho)
+            cv2.imshow("Foto", foto)
+            cv2.waitKey(0)  # Espera qualquer tecla para fechar a foto (ver se precisa ser removido)
+            cv2.destroyWindow("Foto")
 
-		if cv2.waitKey(5) == 27:	# ESC
-			break
+        # Sair com ESC
+        if cv2.waitKey(5) == 27:  # ESC
+            break
 
-webcam.release()
-cv2.destroyAllWindows()
+    webcam.release()
+    cv2.destroyAllWindows()
