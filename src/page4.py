@@ -31,7 +31,7 @@ def atualizar():
 
 	# se o usuário já existir ele vai estar
 	# registrado com "cpf_antigo"
-	if(verificar_info(cpf_antigo) == 0):
+	if(verificar_info(cpf_antigo,nome_antigo) == 1):
 		aviso_label.config(text="Usuário não encontrado.")
 	else:
 		atualizar_registro(nome_antigo, cpf_antigo, nome_novo, cpf_novo)
