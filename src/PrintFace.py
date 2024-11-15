@@ -95,3 +95,4 @@ def analisar_rosto(nome):
 
     webcam.release()
     cv2.destroyAllWindows()
+    

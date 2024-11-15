@@ -15,7 +15,7 @@ def create_table() -> None:
 		CREATE TABLE IF NOT EXISTS funcionarios_tbl (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			nome VARCHAR(32),
-			cpf VARCHAR(14)
+			cpf VARCHAR(14) UNIQUE
 		)
     """)
 
