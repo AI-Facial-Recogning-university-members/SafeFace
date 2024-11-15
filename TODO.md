@@ -4,25 +4,13 @@
 - Finalizar reconhecimento facial
 - Melhorar código
 
-## App desktop -> Programação ( marcar um x na frente se ja foi feito ) 
-    - Page 1 -> Principal:  x
-        botoes: 
-            Executar (execução do programa principal) -> "Linkar main.py"
-    
-        Formulario: -> { Todas as informações sendo linkadas diretamente ao database } (ainda nao foi linkado, mas esta feito)
-            Voltar ->(Voltar à pagina principal)   -> "page inside page" 
-
-    - Page 3 -> Editar/Excluir (NECESSARIO REVISAO PARA MELHOR APRIMORAMENTO DA PAGINA)
-        - Ligação "page inside page":
-            Page 1
-        - Tabela:
-            - podendo ser selecionado dados por dados 
-
-    - Page 4 -> Execução do programa principal -> (NECESSARIO REVISAO PARA MELHOR APRIMORAMENTO DA PAGINA)
-        {AINDA NAO PENSEI EXATAMENTE COMO VAI SER ESSA PAGINA}
+##  Teste.py
+    - Fazer um looping com as imagens  dentro da pag \img
+        - Dentro do looping fazer uma comparação com as imagens e com o que a camera esta captando .
+            - Usando a função "   os.listdir   " -> para pasta \img
 
 ## Ideia
-    -Dar resize na área da mascára
+    -Dar resize na área da mascára -> foi feito porem o desempenho nao melhorou.
 
 ## Erro
     -Printface iniciando antes do esperado quando clica em cadastro
