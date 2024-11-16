@@ -13,7 +13,7 @@ def tableview():
 
 def executar():
     app.destroy()
-    subprocess.run(["python", r'.\src\PrintFace.py'])
+    subprocess.run(["python", r'.\src\Main.py'])
 
 
 app = ttk.Window(themename="superhero")
