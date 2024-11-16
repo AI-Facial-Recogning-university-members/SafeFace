@@ -3,6 +3,7 @@ import mediapipe as mp
 import face_recognition
 import numpy as np
 import os
+# dar um install em: ' pip install opencv-python mediapipe face-recognition numpy '
 
 # Inicializa MediaPipe
 desenho = mp.solutions.drawing_utils
@@ -28,6 +29,23 @@ def carregar_imagens_da_pasta(pasta):
                 print(f"[INFO] Carregado: {nome}")
             except IndexError:
                 print(f"[WARNING] Não foi possível processar a imagem: {arquivo}")
+
+def carregar_imagem(nome_arquivo, nome):
+    """
+    Carrega uma imagem, tenta detectar o rosto e armazena o encoding.
+    """
+    try:
+        imagem = face_recognition.load_image_file(nome_arquivo)
+        encodings = face_recognition.face_encodings(imagem)
+
+        if len(encodings) > 0:
+            conhecidos_encodings.append(encodings[0])
+            nomes.append(nome)
+            print(f"[INFO] Carregado: {nome}")
+        else:
+            print(f"[WARNING] Nenhum rosto encontrado em {nome_arquivo}. Verifique a imagem.")
+    except Exception as e:
+        print(f"[ERROR] Erro ao processar {nome_arquivo}: {e}")
 
 def desenhar_retangulo_rosto(frame, local_rosto, nome):
     """
