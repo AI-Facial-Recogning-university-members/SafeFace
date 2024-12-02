@@ -28,6 +28,7 @@ def voltar():
 l1 = [
     {"text": "Nome", "stretch": True},
     {"text": "CPF", "stretch": False},
+	{"text": "Clock in", "stretch": False}
 ]
 
 r_set = selecionar_funcionarios()

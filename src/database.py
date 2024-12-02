@@ -1,4 +1,5 @@
 import sqlite3
+from datetime import datetime
 
 # função para conectar ao banco de dados e criar uma tabela de usuarios caso nao exista.
 def connect_db() -> sqlite3.Connection:
@@ -15,7 +16,9 @@ def create_table() -> None:
 		CREATE TABLE IF NOT EXISTS funcionarios_tbl (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			nome VARCHAR(32),
-			cpf VARCHAR(14) UNIQUE
+			cpf VARCHAR(14) UNIQUE,
+			clock_in TEXT,
+			clock_out TEXT
 		)
     """)
 
@@ -29,8 +32,11 @@ def add_funcionario(nome, cpf) -> None:
 	conn = connect_db()
 	curr = conn.cursor()
 
+	clock_in = datetime.now()
+
 	# Insere os dados na tabela
-	curr.execute("INSERT INTO funcionarios_tbl(nome, cpf) VALUES(?, ?)", (nome, cpf,))
+	curr.execute("INSERT INTO funcionarios_tbl(nome, cpf, clock_in) VALUES(?, ?, ?)",
+					(nome, cpf, clock_in.strftime("%H-%M-%S"),))
 
 	conn.commit()	# Salva as alterações
 	curr.close()	# Fecha o cursor
@@ -54,7 +60,7 @@ def selecionar_funcionarios() -> list:
 	conn = connect_db()
 	curr = conn.cursor()
 
-	result = curr.execute("SELECT nome, cpf FROM funcionarios_tbl")
+	result = curr.execute("SELECT nome, cpf, clock_in FROM funcionarios_tbl")
 	data = result.fetchall()
 
 	conn.commit()
