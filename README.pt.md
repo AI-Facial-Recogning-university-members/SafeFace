@@ -10,7 +10,7 @@
 </p>
 </h1>
 
-##  [English]() | [Português]()
+##  [English](README.md) | [Português](README.)
 
 ## Sobre o Projeto:
 
