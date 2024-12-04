@@ -1,21 +1,50 @@
-# SafeFace
 
-## About the project
+<h1 align="center" style="display: block; font-size: 2.5em; font-weight: bold; margin-block-start: 1em; margin-block-end: 1em;">  
+  <br><br><strong>SafeFace</strong>
+  <p align="center">  
+    <a  href="falta fazer o video"> 
+        <img  alt="youtube"  src=https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white />  
+    </a>  
+  
+    
+</p>
+</h1>
 
-This project was made as a project to the last semester of 2024.
-The objective here is quite simple: make a facial recognition software with AI.
+##  [English](README.md) | [Português](README.pt.md.)
 
-## Project members
+## About the project:
 
-- Noah Vêri de Morais Franco Aleluia, 2014803.
-- Joaquim Pedro Augusto de Castro Leite Oliveira, 2014803.
-- Gustavo Rosa de Jesus, 2012734.
-- Leonardo Perin Andreozi 1995746
-- João Paulo Ferrari Sant'Ana, 2007857.
+**This project was made for the 2nd semester of college. With the objective of using artificial intelligence to be used in an administrative environment such as companies, startups or city hall for employee management.**
 
-## Tools used
 
-- OpenCv
-- Numpy (version 1.26.4)
+
+## Members:
+
+- <strong>  Noah Franco  <a href="https://www.linkedin.com/in/noah-franco-108293264/"><img src="https://img.shields.io/badge/-Noah Franco-0077b5?style=flat&logo=Linkedin&logoColor=white" />  <img href="https://github.com/DevNoahF" src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white">
+</a>
+
+- Gustavo Jesus <a href="falta colocar"><img src="https://img.shields.io/badge/-Noah Franco-0077b5?style=flat&logo=Linkedin&logoColor=white" /> <img href="https://github.com/GustavosJesusSec" src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white">
+</a>
+
+- Leonardo Perin  <a href="https://www.linkedin.com/in/leonardo-perin-a5ba20335"> <img src="https://img.shields.io/badge/-Leonardo Perin-0077b5?style=flat&logo=Linkedin&logoColor=white" /> <img href="https://github.com/Perinzinho" src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white">
+</a>
+
+- João Ferrari  <a href="https://www.linkedin.com/in/jo%C3%A3o-paulo-ferrari-sant-ana-82263b26b/?trk=opento_nprofile_details"><img src="https://img.shields.io/badge/- João Ferrari -0077b5?style=flat&logo=Linkedin&logoColor=white" /> <img href="https://github.com/JoaoPauloFerrariSantAna" src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white">
+</strong>
+</a>
+
+
+
+## Tools Used:
+
+- Numpy
+- Dlib
+- Ttkbootstrap
 - Face_recognition
+- Opencv
+- Subprocess
+- OS
+- Mediapipe
+- Sqlite3
+
 
