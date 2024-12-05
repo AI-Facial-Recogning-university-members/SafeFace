@@ -23,7 +23,7 @@ def excluir():
 
 def voltar():
     app.destroy()
-    subprocess.run(["python", r'.\src\main.py'])
+    subprocess.run(["python", r'.\main.py'])
 
 l1 = [
     {"text": "Nome", "stretch": True},
