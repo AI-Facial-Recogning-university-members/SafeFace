@@ -14,7 +14,7 @@
 
 ## About the project:
 
-**This project was made for the 2nd semester of college. With the objective of using artificial intelligence to be used in an administrative environment such as companies, startups or city hall for employee management.**
+***This project was made for the 2nd semester of college. With the objective of using artificial intelligence to be used in an administrative environment such as companies, startups or city hall for employee management.***
 
 
 
